@@ -42,8 +42,12 @@
             this.LabelSeconds = new System.Windows.Forms.Label();
             this.LabelHours = new System.Windows.Forms.Label();
             this.LabelDays = new System.Windows.Forms.Label();
-            this.ListBoxRecepients = new System.Windows.Forms.ListBox();
+            this.ListBoxRecipients = new System.Windows.Forms.ListBox();
             this.TextBoxNewRecipient = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownDays)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownMinutes)).BeginInit();
@@ -55,7 +59,7 @@
             this.ListBoxFeeds.ItemHeight = 16;
             this.ListBoxFeeds.Location = new System.Drawing.Point(12, 5);
             this.ListBoxFeeds.Name = "ListBoxFeeds";
-            this.ListBoxFeeds.Size = new System.Drawing.Size(630, 132);
+            this.ListBoxFeeds.Size = new System.Drawing.Size(904, 132);
             this.ListBoxFeeds.TabIndex = 11;
             // 
             // LabelPageTitle
@@ -70,7 +74,7 @@
             // 
             this.TextBoxNewLink.Location = new System.Drawing.Point(12, 142);
             this.TextBoxNewLink.Name = "TextBoxNewLink";
-            this.TextBoxNewLink.Size = new System.Drawing.Size(486, 22);
+            this.TextBoxNewLink.Size = new System.Drawing.Size(737, 22);
             this.TextBoxNewLink.TabIndex = 9;
             this.TextBoxNewLink.Text = "https://www.ibm.com/developerworks/views/global/rss/libraryview.jsp";
             // 
@@ -95,14 +99,15 @@
             this.WebBrowserMain.Location = new System.Drawing.Point(349, 202);
             this.WebBrowserMain.MinimumSize = new System.Drawing.Size(20, 20);
             this.WebBrowserMain.Name = "WebBrowserMain";
-            this.WebBrowserMain.Size = new System.Drawing.Size(971, 468);
+            this.WebBrowserMain.ScriptErrorsSuppressed = true;
+            this.WebBrowserMain.Size = new System.Drawing.Size(1563, 468);
             this.WebBrowserMain.TabIndex = 7;
             // 
             // ButtonAddFeed
             // 
-            this.ButtonAddFeed.Location = new System.Drawing.Point(504, 141);
+            this.ButtonAddFeed.Location = new System.Drawing.Point(755, 143);
             this.ButtonAddFeed.Name = "ButtonAddFeed";
-            this.ButtonAddFeed.Size = new System.Drawing.Size(138, 23);
+            this.ButtonAddFeed.Size = new System.Drawing.Size(161, 23);
             this.ButtonAddFeed.TabIndex = 6;
             this.ButtonAddFeed.Text = "Add RSS feed";
             this.ButtonAddFeed.UseVisualStyleBackColor = true;
@@ -110,9 +115,9 @@
             // 
             // ButtonBeginSending
             // 
-            this.ButtonBeginSending.Location = new System.Drawing.Point(648, 141);
+            this.ButtonBeginSending.Location = new System.Drawing.Point(922, 143);
             this.ButtonBeginSending.Name = "ButtonBeginSending";
-            this.ButtonBeginSending.Size = new System.Drawing.Size(138, 23);
+            this.ButtonBeginSending.Size = new System.Drawing.Size(155, 23);
             this.ButtonBeginSending.TabIndex = 12;
             this.ButtonBeginSending.Text = "Start sending news";
             this.ButtonBeginSending.UseVisualStyleBackColor = true;
@@ -120,9 +125,9 @@
             // 
             // ButtonAddRecipient
             // 
-            this.ButtonAddRecipient.Location = new System.Drawing.Point(792, 140);
+            this.ButtonAddRecipient.Location = new System.Drawing.Point(1083, 143);
             this.ButtonAddRecipient.Name = "ButtonAddRecipient";
-            this.ButtonAddRecipient.Size = new System.Drawing.Size(137, 23);
+            this.ButtonAddRecipient.Size = new System.Drawing.Size(123, 23);
             this.ButtonAddRecipient.TabIndex = 13;
             this.ButtonAddRecipient.Text = "Add recipient";
             this.ButtonAddRecipient.UseVisualStyleBackColor = true;
@@ -130,21 +135,21 @@
             // 
             // NumericUpDownHours
             // 
-            this.NumericUpDownHours.Location = new System.Drawing.Point(648, 55);
+            this.NumericUpDownHours.Location = new System.Drawing.Point(922, 59);
             this.NumericUpDownHours.Name = "NumericUpDownHours";
             this.NumericUpDownHours.Size = new System.Drawing.Size(61, 22);
             this.NumericUpDownHours.TabIndex = 14;
             // 
             // NumericUpDownDays
             // 
-            this.NumericUpDownDays.Location = new System.Drawing.Point(648, 113);
+            this.NumericUpDownDays.Location = new System.Drawing.Point(922, 108);
             this.NumericUpDownDays.Name = "NumericUpDownDays";
             this.NumericUpDownDays.Size = new System.Drawing.Size(61, 22);
             this.NumericUpDownDays.TabIndex = 15;
             // 
             // NumericUpDownMinutes
             // 
-            this.NumericUpDownMinutes.Location = new System.Drawing.Point(649, 5);
+            this.NumericUpDownMinutes.Location = new System.Drawing.Point(922, 5);
             this.NumericUpDownMinutes.Name = "NumericUpDownMinutes";
             this.NumericUpDownMinutes.Size = new System.Drawing.Size(60, 22);
             this.NumericUpDownMinutes.TabIndex = 16;
@@ -152,7 +157,7 @@
             // LabelSeconds
             // 
             this.LabelSeconds.AutoSize = true;
-            this.LabelSeconds.Location = new System.Drawing.Point(716, 5);
+            this.LabelSeconds.Location = new System.Drawing.Point(998, 10);
             this.LabelSeconds.Name = "LabelSeconds";
             this.LabelSeconds.Size = new System.Drawing.Size(57, 17);
             this.LabelSeconds.TabIndex = 17;
@@ -161,7 +166,7 @@
             // LabelHours
             // 
             this.LabelHours.AutoSize = true;
-            this.LabelHours.Location = new System.Drawing.Point(716, 55);
+            this.LabelHours.Location = new System.Drawing.Point(998, 64);
             this.LabelHours.Name = "LabelHours";
             this.LabelHours.Size = new System.Drawing.Size(46, 17);
             this.LabelHours.TabIndex = 18;
@@ -170,36 +175,75 @@
             // LabelDays
             // 
             this.LabelDays.AutoSize = true;
-            this.LabelDays.Location = new System.Drawing.Point(715, 113);
+            this.LabelDays.Location = new System.Drawing.Point(998, 108);
             this.LabelDays.Name = "LabelDays";
             this.LabelDays.Size = new System.Drawing.Size(40, 17);
             this.LabelDays.TabIndex = 19;
             this.LabelDays.Text = "Days";
             // 
-            // ListBoxRecepients
+            // ListBoxRecipients
             // 
-            this.ListBoxRecepients.FormattingEnabled = true;
-            this.ListBoxRecepients.ItemHeight = 16;
-            this.ListBoxRecepients.Location = new System.Drawing.Point(793, 5);
-            this.ListBoxRecepients.Name = "ListBoxRecepients";
-            this.ListBoxRecepients.Size = new System.Drawing.Size(532, 132);
-            this.ListBoxRecepients.TabIndex = 20;
+            this.ListBoxRecipients.FormattingEnabled = true;
+            this.ListBoxRecipients.ItemHeight = 16;
+            this.ListBoxRecipients.Location = new System.Drawing.Point(1083, 5);
+            this.ListBoxRecipients.Name = "ListBoxRecipients";
+            this.ListBoxRecipients.Size = new System.Drawing.Size(530, 132);
+            this.ListBoxRecipients.TabIndex = 20;
             // 
             // TextBoxNewRecipient
             // 
-            this.TextBoxNewRecipient.Location = new System.Drawing.Point(935, 141);
+            this.TextBoxNewRecipient.Location = new System.Drawing.Point(1211, 143);
             this.TextBoxNewRecipient.Name = "TextBoxNewRecipient";
-            this.TextBoxNewRecipient.Size = new System.Drawing.Size(390, 22);
+            this.TextBoxNewRecipient.Size = new System.Drawing.Size(402, 22);
             this.TextBoxNewRecipient.TabIndex = 21;
             this.TextBoxNewRecipient.Text = "andy844551@gmail.com";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(1619, 5);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(415, 132);
+            this.listBox1.TabIndex = 22;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(1706, 142);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(328, 22);
+            this.textBox1.TabIndex = 23;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1619, 142);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(81, 23);
+            this.button1.TabIndex = 24;
+            this.button1.Text = "Add tag";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1494, 170);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 25;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1332, 674);
+            this.ClientSize = new System.Drawing.Size(1924, 674);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.TextBoxNewRecipient);
-            this.Controls.Add(this.ListBoxRecepients);
+            this.Controls.Add(this.ListBoxRecipients);
             this.Controls.Add(this.LabelDays);
             this.Controls.Add(this.LabelHours);
             this.Controls.Add(this.LabelSeconds);
@@ -216,6 +260,7 @@
             this.Controls.Add(this.ButtonAddFeed);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownHours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownDays)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownMinutes)).EndInit();
@@ -240,8 +285,12 @@
         private System.Windows.Forms.Label LabelSeconds;
         private System.Windows.Forms.Label LabelHours;
         private System.Windows.Forms.Label LabelDays;
-        private System.Windows.Forms.ListBox ListBoxRecepients;
+        private System.Windows.Forms.ListBox ListBoxRecipients;
         private System.Windows.Forms.TextBox TextBoxNewRecipient;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
