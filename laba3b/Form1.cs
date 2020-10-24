@@ -21,23 +21,40 @@ namespace laba3b
         }
         List<string> Links = new List<string>();
         List<string> Summaries = new List<string>();
-        private void button1_Click(object sender, EventArgs e)
+
+
+
+
+        private void ButtonAddFeed_Click(object sender, EventArgs e)
         {
+            ListBoxFeeds.Items.Add(TextBoxNewLink.Text);
+            TextBoxNewLink.Text = "";
+        }
+
+        private void ListBoxFeedItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WebBrowserMain.Navigate(Links[ListBoxFeedItems.SelectedIndex]);
+            LabelPageTitle.Text = ListBoxFeedItems.Items[ListBoxFeedItems.SelectedIndex].ToString();
+        }
+
+        private void ButtonBeginSending_Click(object sender, EventArgs e)
+        {
+
             try
             {
-                string url = textBox1.Text;
+                string url = TextBoxNewLink.Text;
                 XmlReader reader = XmlReader.Create(url);
                 SyndicationFeed feed = SyndicationFeed.Load(reader);
                 reader.Close();
-                webBrowser1.ScriptErrorsSuppressed = true;
+                WebBrowserMain.ScriptErrorsSuppressed = true;
                 foreach (SyndicationItem item in feed.Items)
                 {
                     //Summaries.Add(item.Summary?.Text??"");
                     Links.Add(item.Links[0].Uri.ToString());
-                    listBox1.Items.Add(item.Title.Text);
+                    ListBoxFeedItems.Items.Add(item.Title.Text);
                 }
-                listBox2.Items.Add(url);
-                textBox1.Text = "";
+                ListBoxFeeds.Items.Add(url);
+                TextBoxNewLink.Text = "";
             }
             catch (Exception err)
             {
@@ -45,11 +62,10 @@ namespace laba3b
             }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ButtonAddRecipient_Click(object sender, EventArgs e)
         {
-            webBrowser1.Navigate(Links[listBox1.SelectedIndex]);
-
-            label1.Text = listBox1.Items[listBox1.SelectedIndex].ToString();
+            ListBoxRecepients.Items.Add(TextBoxNewRecipient.Text);
+            TextBoxNewRecipient.Text = "";
         }
     }
 }
