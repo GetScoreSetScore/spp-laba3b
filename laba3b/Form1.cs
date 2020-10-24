@@ -48,6 +48,7 @@ namespace laba3b
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             webBrowser1.Navigate(Links[listBox1.SelectedIndex]);
+
             label1.Text = listBox1.Items[listBox1.SelectedIndex].ToString();
         }
     }

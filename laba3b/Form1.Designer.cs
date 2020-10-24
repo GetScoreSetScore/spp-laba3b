@@ -73,6 +73,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(331, 500);
             this.listBox1.TabIndex = 8;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // webBrowser1
             // 
@@ -93,6 +94,7 @@
             this.ButtonLoad.TabIndex = 6;
             this.ButtonLoad.Text = "Load RSS feed";
             this.ButtonLoad.UseVisualStyleBackColor = true;
+            this.ButtonLoad.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
