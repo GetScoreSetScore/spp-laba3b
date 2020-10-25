@@ -44,10 +44,9 @@
             this.LabelDays = new System.Windows.Forms.Label();
             this.ListBoxRecipients = new System.Windows.Forms.ListBox();
             this.TextBoxNewRecipient = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.TextBoxTags = new System.Windows.Forms.TextBox();
+            this.ButtonDeleteRecipient = new System.Windows.Forms.Button();
+            this.ButtonDeleteFeed = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownHours)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownDays)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownMinutes)).BeginInit();
@@ -57,6 +56,11 @@
             // 
             this.ListBoxFeeds.FormattingEnabled = true;
             this.ListBoxFeeds.ItemHeight = 16;
+            this.ListBoxFeeds.Items.AddRange(new object[] {
+            "https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/sectio" +
+                "n/world/rss.xml",
+            "https://www.ibm.com/developerworks/views/global/rss/libraryview.jsp",
+            "https://www.thecipherbrief.com/feed"});
             this.ListBoxFeeds.Location = new System.Drawing.Point(12, 5);
             this.ListBoxFeeds.Name = "ListBoxFeeds";
             this.ListBoxFeeds.Size = new System.Drawing.Size(904, 132);
@@ -72,11 +76,10 @@
             // 
             // TextBoxNewLink
             // 
-            this.TextBoxNewLink.Location = new System.Drawing.Point(12, 142);
+            this.TextBoxNewLink.Location = new System.Drawing.Point(155, 142);
             this.TextBoxNewLink.Name = "TextBoxNewLink";
-            this.TextBoxNewLink.Size = new System.Drawing.Size(737, 22);
+            this.TextBoxNewLink.Size = new System.Drawing.Size(594, 22);
             this.TextBoxNewLink.TabIndex = 9;
-            this.TextBoxNewLink.Text = "https://www.ibm.com/developerworks/views/global/rss/libraryview.jsp";
             // 
             // ListBoxFeedItems
             // 
@@ -136,23 +139,46 @@
             // NumericUpDownHours
             // 
             this.NumericUpDownHours.Location = new System.Drawing.Point(922, 59);
+            this.NumericUpDownHours.Maximum = new decimal(new int[] {
+            23,
+            0,
+            0,
+            0});
             this.NumericUpDownHours.Name = "NumericUpDownHours";
             this.NumericUpDownHours.Size = new System.Drawing.Size(61, 22);
             this.NumericUpDownHours.TabIndex = 14;
+            this.NumericUpDownHours.ValueChanged += new System.EventHandler(this.NumericUpDownTime_ValueChanged);
             // 
             // NumericUpDownDays
             // 
             this.NumericUpDownDays.Location = new System.Drawing.Point(922, 108);
+            this.NumericUpDownDays.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.NumericUpDownDays.Name = "NumericUpDownDays";
             this.NumericUpDownDays.Size = new System.Drawing.Size(61, 22);
             this.NumericUpDownDays.TabIndex = 15;
+            this.NumericUpDownDays.ValueChanged += new System.EventHandler(this.NumericUpDownTime_ValueChanged);
             // 
             // NumericUpDownMinutes
             // 
             this.NumericUpDownMinutes.Location = new System.Drawing.Point(922, 5);
+            this.NumericUpDownMinutes.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
             this.NumericUpDownMinutes.Name = "NumericUpDownMinutes";
             this.NumericUpDownMinutes.Size = new System.Drawing.Size(60, 22);
             this.NumericUpDownMinutes.TabIndex = 16;
+            this.NumericUpDownMinutes.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.NumericUpDownMinutes.ValueChanged += new System.EventHandler(this.NumericUpDownTime_ValueChanged);
             // 
             // LabelSeconds
             // 
@@ -185,6 +211,10 @@
             // 
             this.ListBoxRecipients.FormattingEnabled = true;
             this.ListBoxRecipients.ItemHeight = 16;
+            this.ListBoxRecipients.Items.AddRange(new object[] {
+            "rewif99224@bevsemail.com",
+            "rowefa3610@iazhy.com",
+            "mekiwow992@bevsemail.com"});
             this.ListBoxRecipients.Location = new System.Drawing.Point(1083, 5);
             this.ListBoxRecipients.Name = "ListBoxRecipients";
             this.ListBoxRecipients.Size = new System.Drawing.Size(530, 132);
@@ -192,56 +222,48 @@
             // 
             // TextBoxNewRecipient
             // 
-            this.TextBoxNewRecipient.Location = new System.Drawing.Point(1211, 143);
+            this.TextBoxNewRecipient.Location = new System.Drawing.Point(1212, 144);
             this.TextBoxNewRecipient.Name = "TextBoxNewRecipient";
-            this.TextBoxNewRecipient.Size = new System.Drawing.Size(402, 22);
+            this.TextBoxNewRecipient.Size = new System.Drawing.Size(272, 22);
             this.TextBoxNewRecipient.TabIndex = 21;
-            this.TextBoxNewRecipient.Text = "andy844551@gmail.com";
             // 
-            // listBox1
+            // TextBoxTags
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(1619, 5);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(415, 132);
-            this.listBox1.TabIndex = 22;
+            this.TextBoxTags.Location = new System.Drawing.Point(1619, 5);
+            this.TextBoxTags.Multiline = true;
+            this.TextBoxTags.Name = "TextBoxTags";
+            this.TextBoxTags.Size = new System.Drawing.Size(415, 161);
+            this.TextBoxTags.TabIndex = 23;
+            this.TextBoxTags.Text = "online development science";
             // 
-            // textBox1
+            // ButtonDeleteRecipient
             // 
-            this.textBox1.Location = new System.Drawing.Point(1706, 142);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(328, 22);
-            this.textBox1.TabIndex = 23;
+            this.ButtonDeleteRecipient.Location = new System.Drawing.Point(1491, 144);
+            this.ButtonDeleteRecipient.Name = "ButtonDeleteRecipient";
+            this.ButtonDeleteRecipient.Size = new System.Drawing.Size(122, 23);
+            this.ButtonDeleteRecipient.TabIndex = 24;
+            this.ButtonDeleteRecipient.Text = "Delete recipient";
+            this.ButtonDeleteRecipient.UseVisualStyleBackColor = true;
+            this.ButtonDeleteRecipient.Click += new System.EventHandler(this.ButtonDeleteRecipient_Click);
             // 
-            // button1
+            // ButtonDeleteFeed
             // 
-            this.button1.Location = new System.Drawing.Point(1619, 142);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(81, 23);
-            this.button1.TabIndex = 24;
-            this.button1.Text = "Add tag";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(1494, 170);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 25;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.ButtonDeleteFeed.Location = new System.Drawing.Point(12, 141);
+            this.ButtonDeleteFeed.Name = "ButtonDeleteFeed";
+            this.ButtonDeleteFeed.Size = new System.Drawing.Size(137, 23);
+            this.ButtonDeleteFeed.TabIndex = 25;
+            this.ButtonDeleteFeed.Text = "Delete RSS feed";
+            this.ButtonDeleteFeed.UseVisualStyleBackColor = true;
+            this.ButtonDeleteFeed.Click += new System.EventHandler(this.ButtonDeleteFeed_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 674);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.ButtonDeleteFeed);
+            this.Controls.Add(this.ButtonDeleteRecipient);
+            this.Controls.Add(this.TextBoxTags);
             this.Controls.Add(this.TextBoxNewRecipient);
             this.Controls.Add(this.ListBoxRecipients);
             this.Controls.Add(this.LabelDays);
@@ -259,8 +281,9 @@
             this.Controls.Add(this.WebBrowserMain);
             this.Controls.Add(this.ButtonAddFeed);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "no";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownHours)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownDays)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumericUpDownMinutes)).EndInit();
@@ -287,10 +310,9 @@
         private System.Windows.Forms.Label LabelDays;
         private System.Windows.Forms.ListBox ListBoxRecipients;
         private System.Windows.Forms.TextBox TextBoxNewRecipient;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox TextBoxTags;
+        private System.Windows.Forms.Button ButtonDeleteRecipient;
+        private System.Windows.Forms.Button ButtonDeleteFeed;
     }
 }
 

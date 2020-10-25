@@ -26,6 +26,7 @@ namespace laba3b
 
 
         public List<string> tags = new List<string>();
+        public System.Timers.Timer MainTimer = new System.Timers.Timer();
         private void ButtonAddFeed_Click(object sender, EventArgs e)
         {
             ListBoxFeeds.Items.Add(TextBoxNewLink.Text);
@@ -40,122 +41,78 @@ namespace laba3b
 
         private void ButtonBeginSending_Click(object sender, EventArgs e)
         {
-
-            /*try
+            ThreadPool.QueueUserWorkItem(state => ReadFilterSendThreadMain());
+        }
+        private void ReadFilterSendThreadMain()
+        {
+            if (ListBoxFeeds.Items.Count > 0)
             {
-                string url = TextBoxNewLink.Text;
-                XmlReader reader = XmlReader.Create(url);
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
-                reader.Close();
-                WebBrowserMain.ScriptErrorsSuppressed = true;
-                foreach (SyndicationItem item in feed.Items)
+                List<ManualResetEvent> ThreadsCompletion = new List<ManualResetEvent>();
+                List<List<SyndicationItem>> filtereditems = new List<List<SyndicationItem>>();
+                List<SyndicationItem> result = new List<SyndicationItem>();
+                tags.Clear();
+                tags = TextBoxTags.Text.Split(' ').ToList();
+                Links.Clear();
+                foreach (string url in ListBoxFeeds.Items)
                 {
-                    //Summaries.Add(item.Summary?.Text??"");
-                    Links.Add(item.Links[0].Uri.ToString());
-                    ListBoxFeedItems.Items.Add(item.Title.Text);
+                    ManualResetEvent mre = new ManualResetEvent(false);
+                    ThreadsCompletion.Add(mre);
+                    List<SyndicationItem> filteredfeed = new List<SyndicationItem>();
+                    filtereditems.Add(filteredfeed);
+                    ThreadPool.QueueUserWorkItem((state) =>
+                    {
+                        filteredfeed.AddRange(LoadAndFilter(url));
+                        mre.Set();
+                    });
                 }
-                ListBoxFeeds.Items.Add(url);
-                TextBoxNewLink.Text = "";
+                WaitHandle.WaitAll(ThreadsCompletion.ToArray());
+                foreach (List<SyndicationItem> list in filtereditems)
+                    result.AddRange(list);
+                ListBoxFeedItems.Invoke(new Action(() => ListBoxFeedItems.Items.Clear()));
+                ThreadPool.QueueUserWorkItem(state => SendToRecipients(ListBoxRecipients.Items.Cast<string>().ToList(), result));
+                ListBoxFeedItems.Invoke(new Action(() => ListBoxFeedItems.Items.AddRange(result.Select(items => items.Title.Text).ToArray())));
+                Links.AddRange(result.Select(items => items.Links[0].Uri.ToString()).ToArray());
+                MainTimer.Stop();
+                MainTimer.Interval = (double)(1000 * 60 * (NumericUpDownMinutes.Value + NumericUpDownHours.Value * 60 + NumericUpDownDays.Value * 60 * 24));
+                MainTimer.Start();
+                ActiveForm?.Invoke(new Action(() => ActiveForm.Text = "Mail sent at " + DateTime.Now)); 
             }
-            catch (Exception err)
-            {
-                MessageBox.Show("Unable to load RSS feed from given adress : " + err.Message);
-            }*/
-            ThreadPool.QueueUserWorkItem(state => tmpfunc());
         }
-        private void tmpfunc()
-        {
-            List<ManualResetEvent> ThreadsCompletion = new List<ManualResetEvent>();
-            List<List<SyndicationItem>> filtereditems = new List<List<SyndicationItem>>();
-            List<SyndicationItem> result = new List<SyndicationItem>();
-            foreach(string url in ListBoxFeeds.Items)
-            {
-                ManualResetEvent mre = new ManualResetEvent(false);
-                ThreadsCompletion.Add(mre);
-                List<SyndicationItem> filteredfeed = new List<SyndicationItem>();
-                filtereditems.Add(filteredfeed);
-                ThreadPool.QueueUserWorkItem((state) =>
-                {
-                    filteredfeed.AddRange(LoadAndFilter(url));
-                    mre.Set();
-                });
-            }
-            WaitHandle.WaitAll(ThreadsCompletion.ToArray());
-            foreach (List<SyndicationItem> list in filtereditems)
-                result.AddRange(list);
-            
-            ThreadPool.QueueUserWorkItem(state => SendToRecipients(ListBoxRecipients.Items.Cast<string>().ToList(),result));
-            ListBoxFeedItems.Invoke(new Action(() => ListBoxFeedItems.Items.AddRange(result.Select(foo => foo.Title.Text).ToArray())));
-            Links.AddRange(result.Select(foo => foo.Links[0].Uri.ToString()).ToArray());
-        }
-        private MailMessage CreateMailMessage(string mailFrom, string mailTo, string message, string subject)
-        {
-            MailMessage mail=null;
-            try
-            {
-                mail = new MailMessage();
-                mail.From = new MailAddress(mailFrom);
-                mail.To.Add(new MailAddress(mailTo));
-                mail.Subject = subject;
-                mail.Body = message;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("MailCreate: " + ex.Message);
-            }
-            return mail;
-        }
-        public bool Send(string mailFrom, string password, string mailTo, string message, string subject)
+
+        public void Send(string mailFrom, string password, string mailTo, string message, string subject)
         {
             string username = mailFrom.Split('@')[0];
-            MailMessage mailmessage = CreateMailMessage(mailFrom, mailTo, message, subject);
-            bool returnValue=false;
+            MailMessage mailmessage = new MailMessage(mailFrom, mailTo, subject, message);
+            mailmessage.IsBodyHtml = true;
             try
             {
-                CreateSMTPClient(mailmessage, password, username);
-                returnValue = true;
+                SmtpClient client = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    EnableSsl = true,
+                    Credentials = new NetworkCredential(username, password)
+                    
+                };
+                client.Send(mailmessage);
+                client.Dispose();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Mail send: " + ex.Message);
+                MessageBox.Show("Error sending mail: " + ex.Message);
             }
-            return returnValue;
-        }
-        private void CreateSMTPClient(MailMessage mail, string password, string username)
-        {
-
-            SmtpClient client = new SmtpClient("smtp.gmail.com");
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.Credentials = new NetworkCredential(username, password);
-            //client.DeliveryMethod = SmtpDeliveryMethod.Network;
-            client.Send(mail);
-            mail.Dispose();
-        }
-        private string FormMessage(IEnumerable<SyndicationItem> feeds)
-        {
-            string message = String.Empty;
-            foreach (var feed in feeds)
-            {
-                message += feed.Title.Text + " " + feed.Links.First().Uri +
-                    Environment.NewLine;
-            }
-            return message;
+            mailmessage.Dispose();
         }
         public  void SendToRecipients(List<string> recipients, List<SyndicationItem> items)
         {
-            string message = FormMessage(items);
-            string subject = "You rss feeds by " + DateTime.Now;
+            string message = message = string.Join(string.Empty,
+                items.Select(item => "<a href=\"" + item.Links.First().Uri + "\">" + item.Title.Text + "</a>" + "<br>").ToArray());
+            
+            string subject = "Selected RSS feed at " + DateTime.Now;
             string sender = "phpmailerlaba@gmail.com";
             string password = "phplabapass";
             foreach (var recipient in recipients)
             {
-                //тоже можно параллельно
-                try
-                {
-                    Send(sender, password, recipient, message, subject);
-                }
-                catch { }
+                ThreadPool.QueueUserWorkItem(state => Send(sender, password, recipient, message, subject));
             }
         }
         private List<SyndicationItem> LoadAndFilter(string url)
@@ -189,10 +146,6 @@ namespace laba3b
             }
             return result;
         }
-        private void SendMail()
-        {
-            MessageBox.Show("mail sent");
-        }
 
         private void ButtonAddRecipient_Click(object sender, EventArgs e)
         {
@@ -200,30 +153,32 @@ namespace laba3b
             TextBoxNewRecipient.Text = "";
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void ButtonDeleteFeed_Click(object sender, EventArgs e)
         {
-            try
+            if(ListBoxFeeds.Items.Count>0 && ListBoxFeeds.SelectedIndex != -1)
             {
-                MailMessage mail = new MailMessage();
-                SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-
-                mail.From = new MailAddress("phpmailerlaba@gmail.com");
-                mail.To.Add("andy844551@gmail.com");
-                mail.Subject = "Test Mail";
-                mail.Body = "This is for testing SMTP mail from GMAIL";
-
-                SmtpServer.Port = 587;
-                //SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-                //SmtpServer.UseDefaultCredentials = false;
-                SmtpServer.Credentials = new NetworkCredential("phpmailerlaba", "phplabapass");
-                SmtpServer.EnableSsl = true;
-
-                SmtpServer.Send(mail);
-                MessageBox.Show("mail Send");
+                ListBoxFeeds.Items.RemoveAt(ListBoxFeeds.SelectedIndex);
             }
-            catch (Exception ex)
+        }
+
+        private void ButtonDeleteRecipient_Click(object sender, EventArgs e)
+        {
+            if (ListBoxRecipients.Items.Count > 0 && ListBoxRecipients.SelectedIndex != -1)
             {
-                MessageBox.Show(ex.ToString());
+                ListBoxRecipients.Items.RemoveAt(ListBoxRecipients.SelectedIndex);
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            MainTimer.Elapsed += (o, args) => ReadFilterSendThreadMain();
+        }
+
+        private void NumericUpDownTime_ValueChanged(object sender, EventArgs e)
+        {
+            if(NumericUpDownMinutes.Value==0&& NumericUpDownHours.Value == 0&& NumericUpDownDays.Value == 0)
+            {
+                NumericUpDownMinutes.Value = 1;
             }
         }
     }
